@@ -46,4 +46,3 @@ something other than Cloudflare:
 
 There are also some variants available (Google, Quad9, OpenDNS) in the
 [release assets](https://github.com/dclstn/Xbox360AutoDNS/releases/latest).
-`variants.sh` builds them.
