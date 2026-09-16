@@ -1,8 +1,9 @@
-// AutoDNS.xex 1.0.2, a DashLaunch plugin.
+// AutoDNS.xex 1.1.0, a DashLaunch plugin.
 //
 // The console's stored network settings point at a DNS server that doesn't
-// exist: 192.0.2.1, from the RFC 5737 documentation range. The dashboard that
-// runs before the exploit therefore can't resolve a single Xbox Live hostname.
+// answer (192.0.2.1, from the RFC 5737 documentation range). The dashboard
+// that runs before the exploit therefore can't resolve a single Xbox Live
+// hostname.
 // Once the exploit chain has loaded this plugin, it decrypts those settings
 // with XnpLoadConfigParams, swaps in working DNS servers, and applies them
 // with XnpConfig. XnpConfig only changes the running stack. Storage still
@@ -15,9 +16,13 @@
 #include <stddef.h>
 #include <string.h>
 
-#define DEAD_DNS   0xC0000201u   // 192.0.2.1 (RFC 5737 TEST-NET-1, never assigned)
+// The servers to switch to. build.sh overrides these from its arguments.
+#ifndef GOOD_DNS1
 #define GOOD_DNS1  0x01010101u   // 1.1.1.1
+#endif
+#ifndef GOOD_DNS2
 #define GOOD_DNS2  0x01000001u   // 1.0.0.1
+#endif
 #define BOOT_WAIT  90000         // ms to wait for Wi-Fi association and DHCP at boot
 #define SWAP_WAIT  30000         // ms to wait for DHCP to finish after XnpConfig
 
@@ -123,8 +128,6 @@ static void Run()
     if (!WaitForAddress(BOOT_WAIT))
         return;
     if (!Load(&g_cfg))
-        return;
-    if (g_cfg.dns[0] != DEAD_DNS && g_cfg.dns[1] != DEAD_DNS)
         return;
 
     g_cfg.dns[0] = GOOD_DNS1;

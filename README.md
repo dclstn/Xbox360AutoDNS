@@ -36,3 +36,14 @@ next boot starts offline again.
 
 You need the Xbox 360 XDK. Point `XEDK` at the SDK folder and run
 `./build.sh`. The result is `build/AutoDNS.xex`.
+
+The two resolvers are baked in at build time. Pass them as arguments to use
+something other than Cloudflare:
+
+```bash
+./build.sh 8.8.8.8 8.8.4.4
+```
+
+There are also some variants available (Google, Quad9, OpenDNS) in the
+[release assets](https://github.com/dclstn/Xbox360AutoDNS/releases/latest).
+`variants.sh` builds them.
