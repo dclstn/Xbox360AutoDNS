@@ -52,4 +52,5 @@ Cloudflare, pass them as arguments:
 ```
 
 The [release assets](https://github.com/dclstn/Xbox360AutoDNS/releases/latest)
-also include prebuilt Google, Quad9 and OpenDNS versions.
+also include prebuilt Google, Quad9 and OpenDNS versions. Rename the one you
+download to `AutoDNS.xex` and continue from step 2.
