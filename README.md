@@ -1,14 +1,21 @@
 # Xbox360AutoDNS
 
-DashLaunch plugin for an Xbox 360 on BadAvatar or XeUnshackle. The console
-boots on Wi-Fi with no way to reach Xbox Live during the exploit. Once
-loaded, AutoDNS puts it online using Cloudflare's DNS.
+DashLaunch plugin for an Xbox 360 running BadUpdate or BadAvatar. Until the
+exploit runs, the console has no working DNS, so the stock dashboard can't
+reach Xbox Live. Once the exploit loads AutoDNS, it switches the console to
+Cloudflare's DNS and the console goes online.
 
 ## Setup
 
-1. Download `AutoDNS.xex` from the
-[latest release](https://github.com/dclstn/Xbox360AutoDNS/releases/latest),
-copy it to the root of the USB stick, and put it in `launch.ini` ahead of any
+1. Boot the console normally, without running the exploit. On the stock
+dashboard, go to System Settings > Network Settings > your network >
+Configure Network > DNS Settings > Manual and set both servers to
+`192.0.2.1`. The console saves this setting and uses it on every boot, so you
+only do this once.
+
+2. Download `AutoDNS.xex` from the
+[latest release](https://github.com/dclstn/Xbox360AutoDNS/releases/latest)
+and copy it to the root of the USB stick. Add it to `launch.ini` above any
 plugin that needs the network.
 
 ```ini
@@ -19,30 +26,30 @@ plugin3 = Usb:\xbGuard.xex
 plugin4 = Usb:\JRPC2.xex
 ```
 
-2. On the console, go to System Settings > Network Settings > your network >
-Configure Network > DNS Settings > Manual and set both servers to
-`192.0.2.1`.
+3. Run BadUpdate or BadAvatar as usual. When AutoDNS loads, it switches the
+DNS and the console goes online.
 
 ## How it works
 
-The stored DNS server doesn't exist ([RFC 5737](https://www.rfc-editor.org/info/rfc5737/)),
-so the dashboard that runs before the exploit can't resolve a single Live
-hostname. After boot, AutoDNS decrypts the stored network settings with
-`XnpLoadConfigParams`, swaps in 1.1.1.1 and 1.0.0.1, and applies them with
-`XnpConfig`. `XnpConfig` only touches the live stack, never storage, so the
-next boot starts offline again.
+`192.0.2.1` is a documentation address ([RFC 5737](https://www.rfc-editor.org/info/rfc5737/))
+with no DNS server behind it. While the exploit isn't running, the console
+can't resolve a single Live hostname. After the exploit loads the plugin,
+AutoDNS decrypts the stored network settings with `XnpLoadConfigParams`, puts
+1.1.1.1 and 1.0.0.1 in place of the dead server, and applies them with
+`XnpConfig`. `XnpConfig` only changes the running network stack and never
+writes to storage. The next boot starts offline again.
 
 ## Build
 
 You need the Xbox 360 XDK. Point `XEDK` at the SDK folder and run
 `./build.sh`. The result is `build/AutoDNS.xex`.
 
-The two resolvers are baked in at build time. Pass them as arguments to use
-something other than Cloudflare:
+The build bakes in the two DNS servers. To use something other than
+Cloudflare, pass them as arguments:
 
 ```bash
 ./build.sh 8.8.8.8 8.8.4.4
 ```
 
-There are also some variants available (Google, Quad9, OpenDNS) in the
-[release assets](https://github.com/dclstn/Xbox360AutoDNS/releases/latest).
+The [release assets](https://github.com/dclstn/Xbox360AutoDNS/releases/latest)
+also include prebuilt Google, Quad9 and OpenDNS versions.
