@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- imagexex config for AutoDNS.xex (DashLaunch sysdll plugin). -->
 <xex>
-  <baseaddr addr="0x91E00000" />
+  <baseaddr addr="0x91DC0000" />
   <sysdll />
   <format>
     <compressed />
