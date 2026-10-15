@@ -5,8 +5,8 @@ set -e
 cd "$(dirname "$0")"
 while read -r name dns1 dns2; do
     ./build.sh "$dns1" "$dns2" >/dev/null
-    cp build/AutoDNS.xex "AutoDNS-$name.xex"
-    echo "AutoDNS-$name.xex  ($dns1, $dns2)"
+    cp build/AutoDNS.xex "AutoDNS_$name.xex"
+    echo "AutoDNS_$name.xex  ($dns1, $dns2)"
 done <<'LIST'
 cloudflare 1.1.1.1 1.0.0.1
 google 8.8.8.8 8.8.4.4
